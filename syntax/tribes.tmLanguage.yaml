@@ -52,8 +52,6 @@ repository:
     patterns:
       - match: '\b(if|else|while|for|break|continue|return|halt|switch|case)\b'
         name: keyword.control.tribes
-      - match: '\b(attach|detach)\b'
-        name: support.function.attach.tribes
       - match: '\binstant\b'
         name: keyword.instant.tribes
   variable:
@@ -74,9 +72,20 @@ repository:
               - include: "#function_name"
           - include: "#keyword"
           - include: "#function_name"
+      - match: '(?<=\.)\s*(detach)'
+        name: keyword.detach.tribes
+      - begin: '(?<=\.)\s*(attach)'
+        end: '\)'
+        beginCaptures:
+          '0':
+            name: keyword.attach.tribes
+        patterns:
+          - match: '\b(before|after)\b'
+            name: constant.language.attach.tribes
+          - include: "#function_name"
           - include: "source.tribes"
       - begin: '(?=\b[A-Za-z_][A-Za-z0-9_:]*\s*\()'
-        end: '\('
+        end: '(?=\()'
         patterns:
           - include: "#function_name"
       - begin: '\b(before|after)\b'
