@@ -1,0 +1,111 @@
+name: Tribes Script
+scopeName: source.tribes
+patterns:
+  - include: "#comment"
+  - include: "#string"
+  - include: "#operator"
+  - include: "#keyword"
+  - include: "#variable"
+  #- include: "#function"
+  #- include: "#namespace"
+  - include: "#block"
+repository:
+  comment:
+    patterns:
+      - begin: '/\*'
+        end: '\*/'
+        name: comment.block.tribes
+        patterns:
+          - include: "#comment"
+          - include: "#string"
+      - match: '//.*'
+        name: comment.tribes
+      - match: '#.*'
+        name: comment.tribes
+  string:
+    patterns:
+      - begin: '"'
+        end: '"'
+        name: string.quoted.double.tribes
+        patterns:
+          - match: '\\.'
+            name: constant.character.escape.tribes
+          - match: '\\x..'
+            name: constant.character.escape.hex.tribes
+      - match: '''([^''\r\n]|\\.)*''?'
+        name: string.quoted.single.tribes
+  operator:
+    patterns:
+      - match: '[+\-*/=!<>&^|~@?:]|\$\+'
+        name: keyword.operator.tribes
+  keyword:
+    patterns:
+      - match: '\b(if|else|while|for|break|continue|return|halt|switch|case)\b'
+        name: keyword.control.tribes
+      - match: '\b(before|after)\b'
+        name: keyword.attach.tribes
+      - match: '\b(attach|detach)\b'
+        name: support.function.attach.tribes
+      - match: '\binstant\b'
+        name: keyword.instant.tribes
+  variable:
+    patterns:
+      - include: "#global_variable"
+      - include: "#local_variable"
+  function:
+    begin: '(?<=[;{}])'
+    end: '(?![\s\r\nA-Za-z0-9_:])'
+    patterns:
+      - include: source.tribes
+      - include: "#function_name"
+      - begin: '\bfunction\b'
+        end: '[^\s\r\nA-Za-z0-9_:]'
+        beginCaptures:
+          '0':
+            name: 'keyword.function.tribes'
+        patterns:
+          - include: "#function_name"
+  namespace:
+    match: '((?:(?!::)[A-Za-z0-9_:])*)(::)'
+    captures:
+      '1':
+        name: entity.name.namespace
+      '2':
+        name: keyword.operator.namespace.tribes
+  block:
+    begin: '\{'
+    end: '\}'
+    patterns:
+      - include: "#block"
+      - include: "$self"
+  function_name:
+    begin: '(?=[A-Za-z_])'
+    patterns:
+      - include: "#namespace"
+      - match: '[A-Za-z0-9_:]*'
+        name: entity.name.function.tribes
+  global_variable:
+    begin: '(\$)(?=[A-Za-z_]|\s|$)'
+    name: meta.variable.global.tribes
+    beginCaptures:
+      '1':
+        name: keyword.operator.global.tribes
+    patterns:
+      - include: "#namespace"
+      - match: '[A-Za-z0-9_:]*'
+        name: variable.global.tribes
+  local_variable:
+    begin: '(%)(?=[A-Za-z_]|\s|$)'
+    name: meta.variable.local.tribes
+    beginCaptures:
+      '1':
+        name: keyword.operator.local.tribes
+    patterns:
+      - include: "#namespace"
+      - match: '[A-Za-z0-9_:]*'
+        name: variable.local.tribes
+  nested_parentheses:
+    begin: '\('
+    end: '\)'
+    patterns:
+      - include: "#nested_parentheses"

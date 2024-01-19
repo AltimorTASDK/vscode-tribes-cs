@@ -1,0 +1,1 @@
+A syntax highlighting extension for Tribes 1 `.cs` files.

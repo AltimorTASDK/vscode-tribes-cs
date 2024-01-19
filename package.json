@@ -1,0 +1,30 @@
+{
+    "name": "vscode-tribes-cs",
+    "displayName": "vscode-tribes-cs",
+    "description": "Syntax highlighting for Tribes .cs files",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "license": "LGPL-3.0-or-later",
+    "contributes": {
+        "languages": [{
+            "id": "tribes",
+            "aliases": ["Tribes Script", "tribes"],
+            "extensions": [".cs"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "tribes",
+            "scopeName": "source.tribes",
+            "path": "./syntax/tribes.tmLanguage.json"
+        }]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run json",
+        "json": "npx js-yaml syntax/tribes.tmLanguage.yaml > syntax/tribes.tmLanguage.json"
+    }
+}
