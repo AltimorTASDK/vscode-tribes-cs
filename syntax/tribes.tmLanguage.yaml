@@ -5,6 +5,7 @@ patterns:
   - include: "#string"
   - include: "#float_constant"
   - include: "#integer_constant"
+  - include: "#boolean_constant"
   - include: "#tag_constant"
   - include: "#operator"
   - include: "#keyword"
@@ -29,10 +30,10 @@ repository:
         end: '"'
         name: string.quoted.double.tribes
         patterns:
-          - match: '\\.'
-            name: constant.character.escape.tribes
           - match: '\\x..'
             name: constant.character.escape.hex.tribes
+          - match: '\\.'
+            name: constant.character.escape.tribes
       - match: '''([^''\r\n]|\\.)*''?'
         name: string.quoted.single.tribes
   float_constant:
@@ -41,6 +42,9 @@ repository:
   integer_constant:
     match: '\b(0[xX][A-Fa-f0-9]*|\d+)'
     name: constant.numeric.integer.tribes
+  boolean_constant:
+    match: '\b([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee])\b'
+    name: constant.numeric.boolean.tribes
   tag_constant:
     match: '(?<![A-Za-z0-9_:])ID[A-Za-z0-9_:]+'
     name: support.constant.tag.tribes
