@@ -3,11 +3,13 @@ scopeName: source.tribes
 patterns:
   - include: "#comment"
   - include: "#string"
+  - include: "#float_constant"
+  - include: "#integer_constant"
+  - include: "#tag_constant"
   - include: "#operator"
   - include: "#keyword"
   - include: "#variable"
   - include: "#function"
-  - include: "#block"
 repository:
   comment:
     patterns:
@@ -33,6 +35,15 @@ repository:
             name: constant.character.escape.hex.tribes
       - match: '''([^''\r\n]|\\.)*''?'
         name: string.quoted.single.tribes
+  float_constant:
+    match: '\b(\d+(\.\d+)?[eE][+-]?\d+|\d+\.\d+)'
+    name: constant.numeric.float.tribes
+  integer_constant:
+    match: '\b\d+'
+    name: constant.numeric.integer.tribes
+  tag_constant:
+    match: '(?<![A-Za-z0-9_:])ID[A-Za-z0-9_:]+'
+    name: support.constant.tag.tribes
   operator:
     patterns:
       - match: '[+\-*/=!<>&^|~@?:]|\$\+'
@@ -41,8 +52,6 @@ repository:
     patterns:
       - match: '\b(if|else|while|for|break|continue|return|halt|switch|case)\b'
         name: keyword.control.tribes
-      - match: '\b(before|after)\b'
-        name: keyword.attach.tribes
       - match: '\b(attach|detach)\b'
         name: support.function.attach.tribes
       - match: '\binstant\b'
@@ -65,8 +74,16 @@ repository:
               - include: "#function_name"
           - include: "#keyword"
           - include: "#function_name"
+          - include: "source.tribes"
       - begin: '(?=\b[A-Za-z_][A-Za-z0-9_:]*\s*\()'
         end: '\('
+        patterns:
+          - include: "#function_name"
+      - begin: '\b(before|after)\b'
+        end: '[^\s\r\nA-Za-z0-9_:]'
+        beginCaptures:
+          '0':
+            name: keyword.attach.tribes
         patterns:
           - include: "#function_name"
   namespace:
@@ -76,12 +93,6 @@ repository:
         name: entity.name.namespace
       '2':
         name: keyword.operator.namespace.tribes
-  block:
-    begin: '\{'
-    end: '\}'
-    patterns:
-      - include: "#block"
-      - include: source.tribes
   function_name:
     begin: '(?=[A-Za-z_])'
     end: '(?![A-Za-z0-9_:])'
@@ -111,8 +122,3 @@ repository:
       - include: "#namespace"
       - match: '[A-Za-z0-9_:]*'
         name: variable.local.tribes
-  nested_parentheses:
-    begin: '\('
-    end: '\)'
-    patterns:
-      - include: "#nested_parentheses"
