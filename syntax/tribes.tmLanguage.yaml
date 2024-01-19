@@ -39,7 +39,7 @@ repository:
     match: '\b(\d+(\.\d+)?[eE][+-]?\d+|\d+\.\d+)'
     name: constant.numeric.float.tribes
   integer_constant:
-    match: '\b\d+'
+    match: '\b(0[xX][A-Fa-f0-9]*|\d+)'
     name: constant.numeric.integer.tribes
   tag_constant:
     match: '(?<![A-Za-z0-9_:])ID[A-Za-z0-9_:]+'
