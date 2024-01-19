@@ -9,6 +9,10 @@
     "categories": [
         "Programming Languages"
     ],
+    "repository": {
+        "type": "github",
+        "url": "https://github.com/AltimorTASDK/vscode-tribes-cs"
+    },
     "license": "LGPL-3.0-or-later",
     "contributes": {
         "languages": [{
