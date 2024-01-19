@@ -2,4 +2,4 @@
 .vscode-test/**
 .gitignore
 vsc-extension-quickstart.md
-syntax/tribes.tmLanguage.json
+syntax/tribes.tmLanguage.yaml
