@@ -6,8 +6,7 @@ patterns:
   - include: "#operator"
   - include: "#keyword"
   - include: "#variable"
-  #- include: "#function"
-  #- include: "#namespace"
+  - include: "#function"
   - include: "#block"
 repository:
   comment:
@@ -53,16 +52,21 @@ repository:
       - include: "#global_variable"
       - include: "#local_variable"
   function:
-    begin: '(?<=[;{}])'
-    end: '(?![\s\r\nA-Za-z0-9_:])'
     patterns:
-      - include: source.tribes
-      - include: "#function_name"
-      - begin: '\bfunction\b'
-        end: '[^\s\r\nA-Za-z0-9_:]'
-        beginCaptures:
-          '0':
-            name: 'keyword.function.tribes'
+      - begin: '(?<=[;{}])'
+        end: '(?=[^\s\r\nA-Za-z0-9_:])'
+        patterns:
+          - begin: '\bfunction\b'
+            end: '[^\s\r\nA-Za-z0-9_:]'
+            beginCaptures:
+              '0':
+                name: 'keyword.function.tribes'
+            patterns:
+              - include: "#function_name"
+          - include: "#keyword"
+          - include: "#function_name"
+      - begin: '(?=\b[A-Za-z_][A-Za-z0-9_:]*\s*\()'
+        end: '\('
         patterns:
           - include: "#function_name"
   namespace:
@@ -77,15 +81,17 @@ repository:
     end: '\}'
     patterns:
       - include: "#block"
-      - include: "$self"
+      - include: source.tribes
   function_name:
     begin: '(?=[A-Za-z_])'
+    end: '(?![A-Za-z0-9_:])'
     patterns:
       - include: "#namespace"
       - match: '[A-Za-z0-9_:]*'
         name: entity.name.function.tribes
   global_variable:
     begin: '(\$)(?=[A-Za-z_]|\s|$)'
+    end: '(?![A-Za-z0-9_:])'
     name: meta.variable.global.tribes
     beginCaptures:
       '1':
@@ -96,6 +102,7 @@ repository:
         name: variable.global.tribes
   local_variable:
     begin: '(%)(?=[A-Za-z_]|\s|$)'
+    end: '(?![A-Za-z0-9_:])'
     name: meta.variable.local.tribes
     beginCaptures:
       '1':
