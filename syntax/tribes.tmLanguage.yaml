@@ -46,7 +46,7 @@ repository:
     name: support.constant.tag.tribes
   operator:
     patterns:
-      - match: '[+\-*/=!<>&^|~@?:]|\$\+'
+      - match: '[+\-*/=!<>&^|~@?:.]|\$\+'
         name: keyword.operator.tribes
   keyword:
     patterns:
