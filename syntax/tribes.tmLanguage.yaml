@@ -50,7 +50,7 @@ repository:
     name: support.constant.tag.tribes
   operator:
     patterns:
-      - match: '[+\-*/=!<>&^|~@?:.]|\$\+'
+      - match: '[+\-*/=!<>&^|~@?:]|\$\+'
         name: keyword.operator.tribes
   keyword:
     patterns:
@@ -64,17 +64,13 @@ repository:
       - include: "#local_variable"
   function:
     patterns:
+      - include: "#function_definition"
       - begin: '(?<=[;{}])'
-        end: '(?=[^\s\r\nA-Za-z0-9_:])'
+        end: '(?=[^\s\r\nA-Za-z_#])(?!\/\/|\/\*)'
         patterns:
-          - begin: '\bfunction\b'
-            end: '[^\s\r\nA-Za-z0-9_:]'
-            beginCaptures:
-              '0':
-                name: 'keyword.function.tribes'
-            patterns:
-              - include: "#function_name"
+          - include: "#comment"
           - include: "#keyword"
+          - include: "#function_definition"
           - include: "#function_name"
       - match: '(?<=\.)\s*(detach)'
         name: keyword.detach.tribes
@@ -113,6 +109,14 @@ repository:
       - include: "#namespace"
       - match: '[A-Za-z0-9_:]*'
         name: entity.name.function.tribes
+  function_definition:
+    begin: '\bfunction\b'
+    end: '(?=[^\s\r\nA-Za-z0-9_:])'
+    beginCaptures:
+      '0':
+        name: 'keyword.function.tribes'
+    patterns:
+      - include: "#function_name"
   global_variable:
     begin: '(\$)(?=[A-Za-z_]|\s|$)'
     end: '(?![A-Za-z0-9_:])'
